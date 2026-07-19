@@ -1,17 +1,18 @@
-name: CI
+name: Build
 on: push
+
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: ["18", "20"]
-  steps:
-    - uses: actions/setup-node@v4
-  with:
-    node-version: "20"
-    cache: "npm"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: mkdir -p dist && echo "build output" > dist/app.txt
       - uses: actions/upload-artifact@v4
-    with:
-      name: build
-      path: dist/
+        with:
+          name: build
+          path: dist/
